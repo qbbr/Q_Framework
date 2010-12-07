@@ -1,0 +1,16 @@
+project_name: Q_Framework
+
+# настройки БД
+database:
+  engine:   mysql
+  host:     localhost
+  port:     3306
+  name:     name
+  user:     user
+  password: password
+
+# http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
+timezone: Europe/Moscow
+
+# режим откладки
+#debug: true

@@ -1,0 +1,56 @@
+# .htaccess for Q_Framework
+#
+# in php.ini:
+# disable_functions "exec,passthru,shell_exec,system,proc_open,popen,curl_exec,curl_multi_exec,parse_ini_file,show_source"
+
+DirectoryIndex index.php
+
+# кодировка по-умолчанию
+AddDefaultCharset UTF-8
+
+# убираем браузинг по директориям
+Options All -Indexes
+
+# errors and logs
+php_flag display_errors on
+php_flag log_errors on
+php_value track_errors on
+#php_value error_log /var/www/qcms/logs/php_errors.log
+# E_ALL & ~E_NOTICE
+php_value error_reporting 6135
+
+# максимальный размер загружаемых файлов
+php_value upload_max_filesize 10M
+php_value post_max_size 10M
+# upload time
+php_value max_input_time 180
+
+# security fix
+php_value register_globals off
+php_value enable_dl off
+
+# точность
+php_value precision 12
+
+
+#<IfModule mod_expires.c>
+#	<FilesMatch "\.(gif|jpe?g|png|bmp)$">
+#		ExpiresActive On
+#		ExpiresDefault "access plus 2 week"
+#	</FilesMatch>
+#
+#	<FilesMatch "\.(css|js)$">
+#		ExpiresActive On
+#		ExpiresDefault "access plus 1 week"
+#	</FilesMatch>
+#</IfModule>
+
+
+
+<IfModule mod_rewrite.c>
+	RewriteEngine on
+	RewriteBase /
+	RewriteRule ^(.*)_{4}(\d{1,4})?x(\d{1,4})?(s|i|si|is)?\.(jpe?g|png|gif)$ ImageTransformer.php?file=$1&ext=$5&width=$2&height=$3&params=$4 [L]
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteRule .* index.php [L]
+</IfModule>
