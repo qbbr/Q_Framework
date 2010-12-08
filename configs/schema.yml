@@ -1,0 +1,12 @@
+options:
+  type: MyISAM
+
+
+Users:
+  columns:
+    id:        { type: integer, primary: true, autoincrement: true }
+    email:     { type: string(255), unique: true, email: true, notblank: true }
+    name:      { type: string(255) }
+    password:  { type: string(255), notblank: true }
+    is_staff:  { type: boolean, default: false }
+    is_active: { type: boolean, default: true }
