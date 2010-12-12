@@ -50,7 +50,7 @@ class Q_Debug
         $console->log($_GET, '$_GET');
         $console->log($_POST, '$_POST');
         $console->log($_COOKIE, '$_COOKIE');
-        $console->log($_SESSION, '$_SESSION');
+        if (isset($_SESSION)) $console->log($_SESSION, '$_SESSION');
         $console->log($_FILES, '$_FILES');
         $console->log($_SERVER, '$_SERVER');
 

@@ -7,10 +7,13 @@ database:
   port:     3306
   name:     name
   user:     user
-  password: password
+  password: pass
 
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 timezone: Europe/Moscow
 
+# время жизни сессии в минутах
+session_expire_time: 360
+
 # режим откладки
-#debug: true
+debug: true

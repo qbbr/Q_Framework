@@ -2,7 +2,6 @@
 // константы
 include_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'configs' . DIRECTORY_SEPARATOR . 'constants.php';
 
-
 // Zend
 //set_include_path(LIBS . DS);
 
@@ -21,6 +20,12 @@ $settings = sfYaml::load(CONFIGS . DS . 'settings.yml');
 if (isset($settings['timezone'])) {
     date_default_timezone_set($settings['timezone']);
 }
+// сессия
+$time = $settings['session_expire_time'] * 60;
+session_set_cookie_params($time, '/');
+session_start();
+if (isset($_COOKIE[session_name()])) setcookie(session_name(), $_COOKIE[session_name()], time() + $time, '/');
+
 Q_Registry::set('settings', $settings);
 
 

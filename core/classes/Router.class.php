@@ -44,8 +44,6 @@ class Q_Router
                 $isAuth = Q_Authorization::checkBySession();
                 $isStaff = Q_Registry::get('user', 'is_staff');
                 
-                //$isAuth = $isStaff = true;
-
                 $access = ($isAdmin && $isAuth && $isStaff)
                         ? 'admin'
                         : 'client';

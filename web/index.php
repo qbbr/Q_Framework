@@ -1,6 +1,6 @@
 <?php
 error_reporting(E_ALL & ~E_DEPRECATED);
-session_start();
+
 include_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'core' . DIRECTORY_SEPARATOR . 'bootstrap.php';
 
 try {

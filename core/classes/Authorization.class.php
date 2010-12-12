@@ -64,6 +64,7 @@ class Q_Authorization
             if (!$user || !$user->is_active) {
                 return false;
             } elseif ($user->password == $userPsswd) {
+
                 $_SESSION['id'] = $user->id;
                 $_SESSION['hash'] = md5(SALT2 . $user->password . $_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT']);
 
@@ -101,7 +102,7 @@ class Q_Authorization
         if (!$user || !$user->is_active) {
             return false;
         } elseif ($hash == $_SESSION['hash']) {
-            
+
             $user = $user->toArray();
             unset($user['password']);
             Q_Registry::set('user', $user);
@@ -110,6 +111,12 @@ class Q_Authorization
         }
 
         return false;
+    }
+
+
+    static private function sessionStart()
+    {
+       
     }
 
 
