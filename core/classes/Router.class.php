@@ -2,15 +2,20 @@
 /**
  * Router
  *
- * @author Sokolov Innokenty, <qbbr@qbbr.ru>
+ * @author Sokolov Innokenty <qbbr@qbbr.ru>
  * @copyright Copyright (c) 2010, qbbr
  */
 
 class Q_Router
 {
+    
+    /**
+     * @staticvar ReflectionAnnotatedClass
+     */
+    static private $_reflection = null;
 
     /**
-     * разбор запроса
+     * Разбор запроса
      *
      * @static
      * @access public
@@ -44,6 +49,8 @@ class Q_Router
                 $isAuth = Q_Authorization::checkBySession();
                 $isStaff = Q_Registry::get('user', 'is_staff');
                 
+                //$isAuth = $isStaff = true;
+
                 $access = ($isAdmin && $isAuth && $isStaff)
                         ? 'admin'
                         : 'client';
@@ -53,37 +60,154 @@ class Q_Router
                     $method = 'index';
                 }
 
-                $path = APPS . DS . $access . DS . $controller . '.' . $access . 'Controller.php';
+                $path = APPS . DS . $access . DS . $controller . DS . $controller . '.' . $access . 'Controller.php';
                 
+                $moduleName = $controller;
                 $controller = 'Q_' . $controller;
                 
                 if (!is_file($path)) {
-                    self::error(404);
-                }
+                    self::error404();
+                }  
 
                 include_once $path;
-
+                
                 $method .= 'Action';
 
+                $aclAction = self::getAclAction($controller, $method);
+                
+                $isAjaxRequest = self::isAjaxRequest();
+                
+                $isAjaxMethod = self::isAjaxMethod($controller, $method);
+                
+                if ($isAjaxRequest && !$isAjaxMethod) {
+                    // @todo FIX
+                    throw new Q_MyException('Метод ' . $method . ' не предназначен для AJAX запросов');
+                }
+                
+
                 if (!@is_callable(array($controller, $method))) {
-                    self::error(404);
+                    self::error404();
+                }
+                
+                Q_Template::setAccess($access);
+                $moduleViews = dirname($path) . DS . 'views' . DS;
+                if (is_dir($moduleViews)) {
+                    Q_Template::addPath($moduleViews);
                 }
 
-                $m = new $controller($controller);
-                return $m->$method($request);
+                $m = new $controller($moduleName);
+                
+                $moduleInfo = Doctrine::getTable('ModuleManager')->find($moduleName);
+                if ($moduleInfo) {
+                    Q_Template::addGlobal('currentModule', $moduleInfo->toArray());
+                }
 
-                break;
+                //Q_Template::addGlobal('currentModule', $moduleName);
+
+                return $m->$method($request);
             }
             
         }
 
-        return self::error(404);
+        return self::error404();
+    }
+    
+    
+    /**
+     * isAjaxRequest 
+     * 
+     * @static
+     * @access public
+     * @return boolean
+     */
+    static public function isAjaxRequest()
+    {
+        return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest';
+    }
+    
+    
+    /**
+     * isAjaxMethod 
+     * 
+     * @static
+     * @access private
+     * @param string $class 
+     * @param string $method 
+     * @return boolean
+     */
+    static private function isAjaxMethod($class, $method)
+    {
+        $methodReflection = self::getReflectionMethod($class, $method);
+
+        return $methodReflection->hasAnnotation('Ajax');
+    }
+    
+    
+    /**
+     * getAclAction 
+     * 
+     * @static
+     * @access private
+     * @param string $class 
+     * @param string $method 
+     * @return string
+     */
+    static private function getAclAction($class, $method)
+    {
+        $methodReflection = self::getReflectionMethod($class, $method);
+
+        return ($methodReflection->hasAnnotation('AclAction'))
+               ? $methodReflection->getAnnotation('AclAction')->value
+               : '';
     }
 
 
-    static public function error($en)
+    /**
+     * getReflectionClass 
+     * 
+     * @param string $class 
+     * @static
+     * @access private
+     * @return ReflectionAnnotatedClass
+     */
+    static private function getReflectionClass($class)
     {
-        echo 'ERROR' . $en;
+        if (!isset(self::$_reflection[$class])) {
+            self::$_reflection[$class] = new ReflectionAnnotatedClass($class);
+        }
+
+        return self::$_reflection[$class];
+    }
+
+
+    /**
+     * getReflectionMethod 
+     * 
+     * @static
+     * @access private
+     * @param string $class 
+     * @param string $method 
+     * @return ReflectionMethod
+     */
+    static private function getReflectionMethod($class, $method)
+    {
+        $reflectionClass = self::getReflectionClass($class);
+
+        return $reflectionClass->getMethod($method);
+    }
+
+
+    /**
+     * error 404
+     * 
+     * @static
+     * @access public
+     * @param integer $en 
+     * @return void
+     */
+    static public function error404()
+    {
+        include(WEB . DS . '404.php');
         exit();
     }
 

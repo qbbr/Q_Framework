@@ -1,8 +1,8 @@
 <?php
 /**
- * базовый контроллер
+ * Базовый контроллер
  *
- * @author Sokolov Innokenty, <qbbr@qbbr.ru>
+ * @author Sokolov Innokenty <qbbr@qbbr.ru>
  * @copyright Copyright (c) 2010, qbbr
  */
 
@@ -13,25 +13,19 @@ abstract class Q_Controller
      * название модуля
      * @var string
      */
-    protected $_moduleName = '';
+    //protected $_moduleName = '';
 
     /**
      * директория модуля
      * @var string
      */
-    protected $_moduleDir = '';
+    //protected $_moduleDir = '';
 
     /**
      * директория с шаблонами
      * @var string
      */
-    protected $_viewsDir = '';
-
-    /**
-     * шаблонизатор
-     * @var Twig_Environment
-     */
-    protected $_template = null;
+    //protected $_viewsDir = '';
 
     /**
      * client(by default) or admin
@@ -50,28 +44,7 @@ abstract class Q_Controller
 
 
     /**
-     * получить шаблонизатор
-     *
-     * @access protected
-     * @return Twig_Environment
-     */
-    protected function getTemplate()
-    {
-        if (is_null($this->_template)) {
-            $loader = new Twig_Loader_Filesystem($this->_viewsDir);
-
-            $this->_template = new Twig_Environment($loader, array(
-                'debug' => (bool)Q_Registry::get('settings', 'debug'),
-                /*'cache' => TMP . DS . 'templates'*/
-            ));
-        }
-
-        return $this->_template;
-    }
-
-
-    /**
-     * перенаправление
+     * Перенаправление
      *
      * @access protected
      * @param string $url веб url
@@ -85,33 +58,15 @@ abstract class Q_Controller
 
 
     /**
-     * вызвать контроллер
+     * Вызвать контроллер
      *
      * @access protected
      * @param string $moduleName название контроллера
-     * @param string $function название функции
-     * @param array $args аргументы функции
-     * @return mixed
+     * @return Q_Controller
      */
-    protected function callController($moduleName, $function = null, $args = null)
+    protected function getController($moduleName)
     {
-        $function = isset($function) ? $function : 'indexAction';
-
-        $path = APPS . DS . $moduleName . DS . $this->_access . DS . $moduleName . '.' . $this->_access . 'Controller.php';
-
-        echo $path;
-
-        if (!is_file($path)) return false;
-
-        include_once $path;
-
-        $loadClass = new $moduleName($moduleName);
-        if (is_callable(array($loadClass, $function))) {
-            if (!isset($args)) $args = array();
-            return call_user_func_array(array($loadClass, $function), $args);
-        }
-
-        return false;
+        // banana
     }
 
     /**

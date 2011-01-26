@@ -2,7 +2,7 @@
 /**
  * Interface
  *
- * @author Sokolov Innokenty, <qbbr@qbbr.ru>
+ * @author Sokolov Innokenty <qbbr@qbbr.ru>
  * @copyright Copyright (c) 2010, qbbr
  */
 

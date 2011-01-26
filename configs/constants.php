@@ -15,6 +15,7 @@ define('CLIENT_CONTROLLERS', APPS . DS . 'client');
 define('ADMIN_CONTROLLERS', APPS . DS . 'admin');
 define('CLIENT_VIEWS', CLIENT_CONTROLLERS . DS . 'views');
 define('ADMIN_VIEWS', ADMIN_CONTROLLERS . DS . 'views');
+define('DATA', APPS . DS . 'data');
 
 define('ZEND', LIBS . DS . 'Zend');
 define('CLASSES', CORE . DS . 'classes');

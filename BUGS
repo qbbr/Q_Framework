@@ -1,0 +1,2 @@
+Core:
+ * Не работают аннотации, если в DocComment`е есть русские буквы и директива mb_string-func_overload >= 2

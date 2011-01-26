@@ -2,7 +2,7 @@
 /**
  * Загрущик
  *
- * @author Sokolov Innokenty, <qbbr@qbbr.ru>
+ * @author Sokolov Innokenty <qbbr@qbbr.ru>
  * @copyright Copyright (c) 2010, qbbr
  */
 
@@ -10,7 +10,11 @@ class Q_Autoloader
 {
 
     /**
-     * регистрация
+     * Регистрация
+     * 
+     * @static
+     * @access public
+     * @return void
      */
     static public function register()
     {
@@ -18,6 +22,7 @@ class Q_Autoloader
         spl_autoload_register(array(new self, 'classLoader'));
     }
 
+    
     /**
      * Автозагрузка классов
      *

@@ -2,7 +2,7 @@
 /**
  * Авторизация пользователей
  *
- * @author Sokolov Innokenty, <qbbr@qbbr.ru>
+ * @author Sokolov Innokenty <qbbr@qbbr.ru>
  * @copyright Copyright (c) 2010, qbbr
  */
 
@@ -10,7 +10,7 @@ class Q_Authorization
 {
 
     /**
-     * проверка авторизации
+     * Проверка авторизации
      *
      * @static
      * @access public
@@ -44,7 +44,7 @@ class Q_Authorization
 
 
     /**
-     * проверка авторизации по mail`у
+     * Проверка авторизации по mail`у
      *
      * @static
      * @access public
@@ -81,8 +81,10 @@ class Q_Authorization
 
 
     /**
-     * проверка авторизации по сессии
+     * Проверка авторизации по сессии
      * 
+     * @static
+     * @access public
      * @return boolean
      */
     static public function checkBySession()
@@ -114,14 +116,8 @@ class Q_Authorization
     }
 
 
-    static private function sessionStart()
-    {
-       
-    }
-
-
     /**
-     * выход
+     * Выход
      *
      * @static
      * @access public

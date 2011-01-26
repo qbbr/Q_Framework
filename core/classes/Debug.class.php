@@ -2,7 +2,7 @@
 /**
  * Debug
  *
- * @author Sokolov Innokenty, <qbbr@qbbr.ru>
+ * @author Sokolov Innokenty <qbbr@qbbr.ru>
  * @copyright Copyright (c) 2010, qbbr
  */
 
@@ -14,7 +14,7 @@ class Q_Debug
     static private $_started = false;
 
     /**
-     * время старта
+     * Время старта
      * @staticvar float
      */
     static private $_startTime = 0;
@@ -26,7 +26,7 @@ class Q_Debug
 
 
     /**
-     * старт
+     * Старт
      *
      * @static
      * @access public
@@ -35,10 +35,13 @@ class Q_Debug
     static public function start()
     {
         self::$_startTime = microtime(true);
-
+        
         self::$_profiler = new Doctrine_Connection_Profiler();
-
-        Doctrine_Manager::connection()->addListener(self::$_profiler);
+        
+        $manager = Doctrine_Manager::getInstance();
+        foreach ($manager as $connection) {
+            $connection->addListener(self::$_profiler);
+        }
 
         // для mozilla
         include_once LIBS . DS . 'FirePHPCore' . DS . 'FirePHP.class.php';
@@ -59,6 +62,8 @@ class Q_Debug
 
 
     /**
+     * Setter
+     * 
      * @static
      * @access public
      * @param mixed $var
@@ -76,7 +81,7 @@ class Q_Debug
 
 
     /**
-     * распечатать в FireBug (FirePHP)
+     * Распечатать в FireBug (FirePHP)
      *
      * @static
      * @access public

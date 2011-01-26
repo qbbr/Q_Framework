@@ -5,11 +5,20 @@
 
 DirectoryIndex index.php
 
+# 404 ошибка
+ErrorDocument 404 /404.php
+
 # кодировка по-умолчанию
 AddDefaultCharset UTF-8
 
+# используем utf-8 для всех этих форматов
+AddCharset utf-8 .html .css .js .xml .json .rss
+
 # убираем браузинг по директориям
 Options All -Indexes
+
+# не обязательно всем рассказывать, что это Апач
+ServerSignature Off
 
 # errors and logs
 php_flag display_errors on
@@ -20,8 +29,8 @@ php_value track_errors on
 php_value error_reporting 6135
 
 # максимальный размер загружаемых файлов
-php_value upload_max_filesize 10M
-php_value post_max_size 10M
+php_value upload_max_filesize 20M
+php_value post_max_size 20M
 # upload time
 php_value max_input_time 180
 
@@ -31,6 +40,66 @@ php_value enable_dl off
 
 # точность
 php_value precision 12
+
+
+# Не даем IE войти в режим совместимости с IE7, даже когда он сам этого хочет
+# github.com/rails/rails/commit/123eb25#commitcomment-118920
+# Используем ChromeFrame, если он установлен, чтобы сделать жизнь бедных
+# пользователей IE немного лучше
+<IfModule mod_setenvif.c>
+    <IfModule mod_headers.c>
+        BrowserMatch MSIE ie
+        Header set X-UA-Compatible "IE=Edge,chrome=1" env=ie
+    </IfModule>
+</IfModule>
+
+
+# Поскольку мы не отправляем X-UA-Compatible для браузеров отличных от IE
+# (чтобы сократить размер заголовка),
+# Нам нужно дать знать прокси-серверам об измененении контента на основе UA
+<IfModule mod_headers.c>
+    # Кеш-контроль включается только когда включен модуль mod_headers,
+    # так что нам необходимо его здесь объявить
+    Header append Vary User-Agent
+</IfModule>
+
+
+# видео
+AddType video/ogg                      ogg ogv
+AddType video/mp4                      mp4
+AddType video/webm                     webm
+ 
+# Правильный формат для svg. Необходимо для работы svg шрифтов в iPad Safari
+# twitter.com/FontSquirrel/status/14855840545
+AddType     image/svg+xml              svg svgz
+AddEncoding gzip                       svgz
+                                        
+# веб-шрифты                            
+AddType application/vnd.ms-fontobject  eot
+AddType font/truetype                  ttf
+AddType font/opentype                  otf
+AddType font/woff                      woff
+ 
+# другие форматы                                     
+AddType image/vnd.microsoft.icon       ico
+AddType image/webp                     webp
+AddType text/cache-manifest            manifest
+AddType text/x-component               htc
+AddType application/x-chrome-extension crx
+
+
+# gzip сжатие.
+<IfModule mod_deflate.c>
+    # html, txt, css, js, json, xml, htc:
+    AddOutputFilterByType DEFLATE text/html text/plain text/css application/json
+    AddOutputFilterByType DEFLATE text/javascript application/javascript application/x-javascript
+    AddOutputFilterByType DEFLATE text/xml application/xml text/x-component
+
+    # веб-шрифты и svg:
+    <FilesMatch "\.(ttf|otf|eot|svg)$" >
+        SetOutputFilter DEFLATE
+    </FilesMatch>
+</IfModule>
 
 
 #<IfModule mod_expires.c>
@@ -46,11 +115,12 @@ php_value precision 12
 #</IfModule>
 
 
-
 <IfModule mod_rewrite.c>
 	RewriteEngine on
 	RewriteBase /
-	RewriteRule ^(.*)_{4}(\d{1,4})?x(\d{1,4})?(s|i|si|is)?\.(jpe?g|png|gif)$ ImageTransformer.php?file=$1&ext=$5&width=$2&height=$3&params=$4 [L]
+    RewriteRule ^_\/(admin|client)/([^\//]+)\.css$ qcc.php?a=$1&m=$2&t=css [L]
+    #RewriteRule ^@\/(admin|client)(.*\.css)$ getCss.php?a=$1&p=$2 [L]
+	RewriteRule ^(.*)_{4}(\d{1,4})?x(\d{1,4})?(s|i|si|is)?\.(jpe?g|png|gif)$ imageTransformer.php?file=$1&ext=$5&width=$2&height=$3&params=$4 [L]
 	RewriteCond %{REQUEST_FILENAME} !-f
 	RewriteRule .* index.php [L]
 </IfModule>

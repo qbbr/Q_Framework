@@ -4,7 +4,7 @@ include_once dirname(__FILE__) . DS . 'Uploader' . DS . 'Exception.php';
 /**
  * Uploader
  *
- * @author Sokolov Innokenty, <qbbr@qbbr.ru>
+ * @author Sokolov Innokenty <qbbr@qbbr.ru>
  * @copyright Copyright (c) 2010, qbbr
  */
 

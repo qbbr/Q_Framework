@@ -1,13 +1,14 @@
 <?php
 /**
- * регистр для хранения временных данных
+ * Реестр для хранения временных данных
  *
+ * @example
  * <code>
  * Registry::set('key', 'value');
  * Registry::get('key'); // return value
  * </code>
  *
- * @author Sokolov Innokenty, <qbbr@qbbr.ru>
+ * @author Sokolov Innokenty <qbbr@qbbr.ru>
  * @copyright Copyright (c) 2010, qbbr
  */
 
@@ -15,17 +16,18 @@ class Q_Registry
 {
 
     /**
-     * регистр
+     * Реестр
      * @staticvar array
      */
     static private $_registry = array();
 
 
     /**
-     * вставка данных в регистр
+     * Вставка данных в реестр
      *
      * @static
-     * @param string $key ключ массива
+     * @access public
+     * @param string|integer $key ключ массива
      * @param mixed $value значение
      * @return boolean
      */
@@ -41,10 +43,11 @@ class Q_Registry
 
 
     /**
-     * получение данных из регистра
+     * Получение данных из реестра
      *
      * @static
-     * @param string $key1, $key2, $key3... ключи массива
+     * @access public
+     * @param string|integer $key1, $key2, $key3... ключи массива
      * @return mixed
      */
     static public function get()

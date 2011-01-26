@@ -39,15 +39,21 @@ $manager = Doctrine_Manager::getInstance();
 $manager->setAttribute(Doctrine::ATTR_VALIDATE, Doctrine::VALIDATE_ALL);
 $manager->setAttribute(Doctrine::ATTR_EXPORT, Doctrine::EXPORT_ALL);
 $manager->setAttribute(Doctrine::ATTR_QUOTE_IDENTIFIER, true);
+
 //$manager->setAttribute(Doctrine::ATTR_MODEL_LOADING, Doctrine::MODEL_LOADING_AGGRESSIVE);
 $db = $settings['database'];
-//$dsn = sprintf('%s://%s:%s@%s/%s', $db['engine'], $db['user'], $db['password'], $db['host'], $db['name']);
-//$dsn = 'dblib://qbbr:qbbr@192.168.100.103\qbbr';
-$dsn = sprintf('%s://%s:%s@%s:%d/%s', $db['engine'], $db['user'], $db['password'], $db['host'], $db['port'], $db['name']);
-$conn = Doctrine_Manager::connection($dsn);
-$conn->setAttribute(Doctrine::ATTR_QUOTE_IDENTIFIER, true);
-$conn->setCollate('utf8_unicode_ci');
-$conn->setCharset('utf8');
+
+foreach ($db['connections'] as $connectionName => $value) {
+    if ($connectionName == 'sqlite') {
+        $value['dsn'] = preg_replace_callback('!%(.*)%!', create_function('$matches', 'return "/" . constant($matches[1]);'), $value['dsn']);
+    }
+    $conn = Doctrine_Manager::connection($value['dsn'], $connectionName);
+    $conn->setAttribute(Doctrine::ATTR_QUOTE_IDENTIFIER, true);
+    if ($value['collate']) $conn->setCollate($value['collate']);
+    if ($value['charset']) $conn->setCharset($value['charset']);
+}
+
+$manager->setCurrentConnection($db['default']);
 
 
 // шаблонизатор Twig
@@ -64,3 +70,56 @@ if (isset($settings['debug']) && $settings['debug']) {
         Q_Debug::start();
     }
 }
+
+
+// обработка ошибок
+set_error_handler('errorHandler');
+
+// обработка исключений
+set_exception_handler('exceptionHandler');
+
+function errorHandler($code, $string, $file, $line)
+{
+    $exc = new Q_MyException($string, $code);
+    $exc->setLine($line);
+    $exc->setFile($file);
+    throw $exc;
+}
+
+function exceptionHandler($exception, $message = null, $file = null, $line = null)
+{
+    header('HTTP/1.1 500 Internal Server Error');
+    
+    $toPrint = array(
+        'error' => $exception->getMessage()
+    );
+    
+    if (Q_Registry::get('settings', 'debug')) {
+        $toPrint['file'] = $exception->getFile();
+        $toPrint['line'] = $exception->getLine();
+        $toPrint['trace'] = $exception->getTraceAsString();
+    }
+    
+    if (Q_Router::isAjaxRequest()) {
+        $toPrint['success'] = true;
+        
+        echo new Q_JsonResponse(
+            $toPrint
+        );
+    } else {
+        Q_Template::setAccess('admin');
+        
+        echo new Q_Response(
+            'error.html',
+            $toPrint
+        );
+    }
+    
+    exit();
+}
+
+
+// annotations
+require_once LIBS . DS . 'annotations' . DS . 'annotations.php';
+class AclAction extends Annotation {};
+class Ajax extends Annotation {};

@@ -12,7 +12,7 @@
  * $mail->send();
  * </code>
  *
- * @author Sokolov Innokenty, <qbbr@qbbr.ru>
+ * @author Sokolov Innokenty <qbbr@qbbr.ru>
  * @copyright Copyright (c) 2010, qbbr
  */
 
@@ -23,19 +23,19 @@ class Q_Mail
      * кодировка письма
      * @var string
      */
-    public $charset = "utf8";
+    public $charset = 'utf8';
 
     /**
      * кодирование контента
      * @var string
      */
-    private $_encoding = "8bit";
+    private $_encoding = '8bit';
 
     /**
      * формат контента
      * @var string
      */
-    private $_contentType = "text/plain";
+    private $_contentType = 'text/plain';
 
     /**
      * заголовки
@@ -47,19 +47,19 @@ class Q_Mail
      * кому
      * @var string
      */
-    private $_to = "";
+    private $_to = '';
 
     /**
      * тема письма
      * @var string
      */
-    private $_subject = "";
+    private $_subject = '';
 
     /**
      * текст
      * @var string
      */
-    private $_message = "";
+    private $_message = '';
 
     /**
      * прикреплённые файлы
@@ -71,7 +71,7 @@ class Q_Mail
      * граница для прикреплённых файлов
      * @var string
      */
-    private $_boundary = "";
+    private $_boundary = '';
 
 
     /**
@@ -79,7 +79,7 @@ class Q_Mail
      */
     public function __construct()
     {
-        $this->_boundary = "--" . md5(uniqid("boundary"));
+        $this->_boundary = '--' . md5(uniqid('boundary'));
     }
 
 
@@ -109,9 +109,9 @@ class Q_Mail
      * @param string $name ФИО
      * @return boolean
      */
-    public function from($mail, $name = "")
+    public function from($mail, $name = '')
     {
-        return $this->set_header("From", "{$name} <{$mail}>");
+        return $this->set_header('From', "{$name} <{$mail}>");
     }
 
 
@@ -123,10 +123,10 @@ class Q_Mail
      * @param string $name ФИО
      * @return boolean
      */
-    public function reply_to($mail, $name = "")
+    public function reply_to($mail, $name = '')
     {
-        $mail = preg_replace("/.*<(.*)>/", "$1", $mail);
-        return $this->set_header("Reply-To", "{$name} <{$mail}>");
+        $mail = preg_replace('/.*<(.*)>/', '$1', $mail);
+        return $this->set_header('Reply-To', "{$name} <{$mail}>");
     }
 
 
@@ -153,7 +153,7 @@ class Q_Mail
      */
     public function cc($mail)
     {
-        return $this->set_header("Cc", $this->parse_mail($mail));
+        return $this->set_header('Cc', $this->parse_mail($mail));
     }
 
 
@@ -166,7 +166,7 @@ class Q_Mail
      */
     public function bcc($mail)
     {
-        return $this->set_header("Bcc", $mail = $this->parse_mail($mail));
+        return $this->set_header('Bcc', $mail = $this->parse_mail($mail));
     }
 
 
@@ -195,7 +195,7 @@ class Q_Mail
      */
     public function message($msg, $isHtml = false)
     {
-        if ($isHtml) $this->_contentType = "text/html";
+        if ($isHtml) $this->_contentType = 'text/html';
 
         $this->_message = $msg;
 
@@ -214,7 +214,7 @@ class Q_Mail
     {
         if (!is_numeric($priority)) return false;
 
-        return $this->set_header("X-Priority", $priority);
+        return $this->set_header('X-Priority', $priority);
     }
 
 
@@ -228,11 +228,11 @@ class Q_Mail
      * @param string $disposition[optional]
      * @return boolean
      */
-    public function attach($file, $fileName = null, $fileType = null, $disposition = "attachment")
+    public function attach($file, $fileName = null, $fileType = null, $disposition = 'attachment')
     {
         if (!is_file($file)) return false;
 
-        if (empty($fileType)) $fileType = mime_content_type($file); // "application/x-unknown-content-type"
+        if (empty($fileType)) $fileType = mime_content_type($file); // 'application/x-unknown-content-type'
         if (empty($fileName)) $fileName = basename($file);
 
         $this->_attach[] = array($file, $fileName, $fileType, $disposition);
@@ -299,21 +299,21 @@ class Q_Mail
      */
     private function build_headers()
     {
-        if (empty($this->_headers["Reply-To"])) {
-            $this->reply_to($this->_headers["From"]);
+        if (empty($this->_headers['Reply-To'])) {
+            $this->reply_to($this->_headers['From']);
         }
 
         if (empty($this->_attach)) {
-            $this->set_header("Content-Type", "{$this->_contentType}; charset={$this->charset}");
+            $this->set_header('Content-Type', "{$this->_contentType}; charset={$this->charset}");
         } else {
-            $this->set_header("Content-Type", "multipart/mixed;\n boundary=\"{$this->_boundary}\"");
+            $this->set_header('Content-Type', "multipart/mixed;\n boundary=\"{$this->_boundary}\"");
         }
 
-        $this->set_header("Mime-Version", "1.0");
-        $this->set_header("X-Mailer", "PHP " . phpversion());
-        $this->set_header("Content-Transfer-Encoding", $this->_encoding);
+        $this->set_header('Mime-Version', '1.0');
+        $this->set_header('X-Mailer', 'PHP ' . phpversion());
+        $this->set_header('Content-Transfer-Encoding', $this->_encoding);
 
-        $headers = "";
+        $headers = '';
         foreach ($this->_headers as $key => $value) {
             $value = trim($value);
             $headers .= "{$key}: {$value}\n";
@@ -333,11 +333,11 @@ class Q_Mail
     {
         if (empty($mail)) return false;
 
-        $mails = explode(",", $mail);
+        $mails = explode(',', $mail);
         for ($i = 0; $i < count($mails); $i++) {
             $mails[$i] = trim($mails[$i]);
         }
-        return implode(", ", $mails);
+        return implode(', ', $mails);
     }
 
 }

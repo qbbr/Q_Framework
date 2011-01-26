@@ -1,8 +1,27 @@
 <?php
 /**
- * Request
+ * Request - хранит в себе параметры запроса
  * 
- * @author Sokolov Innokenty, <qbbr@qbbr.ru>
+ * У всех *Action методов в Q_Controller`ах
+ * первым аргументом должен быть `Q_Request $request`
+ * или его экземпляр
+ * 
+ * @example
+ * <code>
+ * class Q_MyController extends Q_AdminController
+ * {
+ * 
+ *     public function indexAction(Q_Request $request)
+ *     {
+ *          echo $request['id'];
+ *          // аналогично
+ *          echo $request->id;
+ *     }
+ * 
+ * }
+ * </code>
+ * 
+ * @author Sokolov Innokenty <qbbr@qbbr.ru>
  * @copyright Copyright (c) 2010, qbbr
  */
 
@@ -13,11 +32,12 @@ class Q_Request implements ArrayAccess
      * хранилище
      * @var array
      */
-    private $container = array();
+    protected $_container = array();
 
 
     /**
-     * конструктор
+     * Конструктор
+     * для множественного назначения
      *
      * @param array $array миссив с данными
      */
@@ -29,35 +49,72 @@ class Q_Request implements ArrayAccess
     }
 
 
-    public function offsetExists($offset)
+    /**
+     * Проверка на существование
+     * 
+     * @access public
+     * @param string|integer $key
+     * @return boolean 
+     */
+    public function offsetExists($key)
     {
-        return isset($this->container[$offset]);
+        return isset($this->_container[$key]);
     }
 
 
-    public function offsetGet($offset)
+    /**
+     * Getter
+     *
+     * @access public
+     * @param string|integer $key
+     * @return mixed
+     */
+    public function offsetGet($key)
     {
-        return isset($this->container[$offset]) ? $this->container[$offset] : null;
+        return isset($this->_container[$key]) ? $this->_container[$key] : null;
     }
 
 
-    public function offsetSet($offset, $value)
+    /**
+     * Setter
+     *
+     * @access public
+     * @param string|integer $key
+     * @param mixed $value
+     * @return void
+     */
+    public function offsetSet($key, $value)
     {
-        if (is_null($offset)) {
-            $this->container[] = $value;
+        if (is_null($key)) {
+            $this->_container[] = $value;
         } else {
-            $this->container[$offset] = $value;
+            $this->_container[$key] = $value;
         }
     }
 
 
-    public function offsetUnset($offset) {
+    /**
+     * Запрет на удаление из хранилища
+     *
+     * @access public
+     * @param type $key
+     * @return false
+     */
+    public function offsetUnset($key) {
         return false;
     }
 
 
-    public function __get($offset) {
-        return $this->offsetGet($offset);
+    /**
+     * Getter
+     * при обращение к атрибутам класса (->)
+     *
+     * @access public
+     * @param string|integer $key
+     * @return mixed
+     */
+    public function __get($key) {
+        return $this->offsetGet($key);
     }
 
 }

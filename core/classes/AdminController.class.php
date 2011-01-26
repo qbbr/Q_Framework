@@ -2,7 +2,7 @@
 /**
  * adminController
  *
- * @author Sokolov Innokenty, <qbbr@qbbr.ru>
+ * @author Sokolov Innokenty <qbbr@qbbr.ru>
  * @copyright Copyright (c) 2010, qbbr
  */
 
@@ -14,8 +14,16 @@ class Q_AdminController extends Q_Controller
     public function __construct($moduleName)
     {
         $this->_moduleName = $moduleName;
-        $this->_moduleDir = APPS . DS . $this->_access;
-        $this->_viewsDir = $this->_moduleDir . DS . 'views';
+    }
+    
+    protected function log()
+    {
+        
+        
+        dir();
+        $log = new Logs();
+        $log->user_id = Q_Registry::get('user', 'id');
+        $log->module = $this->_moduleName;
     }
 
 }
