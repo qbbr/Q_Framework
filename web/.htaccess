@@ -103,24 +103,24 @@ AddType application/x-chrome-extension crx
 
 
 #<IfModule mod_expires.c>
-#	<FilesMatch "\.(gif|jpe?g|png|bmp)$">
-#		ExpiresActive On
-#		ExpiresDefault "access plus 2 week"
-#	</FilesMatch>
+#   <FilesMatch "\.(gif|jpe?g|png|bmp)$">
+#       ExpiresActive On
+#       ExpiresDefault "access plus 2 week"
+#   </FilesMatch>
 #
-#	<FilesMatch "\.(css|js)$">
-#		ExpiresActive On
-#		ExpiresDefault "access plus 1 week"
-#	</FilesMatch>
+#   <FilesMatch "\.(css|js)$">
+#       ExpiresActive On
+#       ExpiresDefault "access plus 1 week"
+#   </FilesMatch>
 #</IfModule>
 
 
 <IfModule mod_rewrite.c>
-	RewriteEngine on
-	RewriteBase /
+    RewriteEngine on
+    RewriteBase /
     RewriteRule ^_\/(admin|client)/([^\//]+)\.css$ qcc.php?a=$1&m=$2&t=css [L]
     #RewriteRule ^@\/(admin|client)(.*\.css)$ getCss.php?a=$1&p=$2 [L]
-	RewriteRule ^(.*)_{4}(\d{1,4})?x(\d{1,4})?(s|i|si|is)?\.(jpe?g|png|gif)$ imageTransformer.php?file=$1&ext=$5&width=$2&height=$3&params=$4 [L]
-	RewriteCond %{REQUEST_FILENAME} !-f
-	RewriteRule .* index.php [L]
+    RewriteRule ^(.*)_{4}(\d{1,4})?x(\d{1,4})?(s|i|si|is)?\.(jpe?g|png|gif)$ imageTransformer.php?file=$1&ext=$5&width=$2&height=$3&params=$4 [L]
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule .* index.php [L]
 </IfModule>
