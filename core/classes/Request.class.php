@@ -24,22 +24,18 @@
  * @author Sokolov Innokenty <qbbr@qbbr.ru>
  * @copyright Copyright (c) 2010, qbbr
  */
-
 class Q_Request implements ArrayAccess
 {
-
     /**
-     * хранилище
-     * @var array
+     * @var array хранилище
      */
     protected $_container = array();
-
 
     /**
      * Конструктор
      * для множественного назначения
      *
-     * @param array $array миссив с данными
+     * @param array $array Массив с данными
      */
     public function __construct(array $array)
     {
@@ -47,7 +43,6 @@ class Q_Request implements ArrayAccess
             $this[$key] = $value;
         }
     }
-
 
     /**
      * Проверка на существование
@@ -61,7 +56,6 @@ class Q_Request implements ArrayAccess
         return isset($this->_container[$key]);
     }
 
-
     /**
      * Getter
      *
@@ -73,7 +67,6 @@ class Q_Request implements ArrayAccess
     {
         return isset($this->_container[$key]) ? $this->_container[$key] : null;
     }
-
 
     /**
      * Setter
@@ -92,7 +85,6 @@ class Q_Request implements ArrayAccess
         }
     }
 
-
     /**
      * Запрет на удаление из хранилища
      *
@@ -103,7 +95,6 @@ class Q_Request implements ArrayAccess
     public function offsetUnset($key) {
         return false;
     }
-
 
     /**
      * Getter
@@ -116,5 +107,4 @@ class Q_Request implements ArrayAccess
     public function __get($key) {
         return $this->offsetGet($key);
     }
-
 }

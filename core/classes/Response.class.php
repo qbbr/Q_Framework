@@ -16,20 +16,16 @@
  * @author Sokolov Innokenty <qbbr@qbbr.ru>
  * @copyright Copyright (c) 2010, qbbr
  */
-
 class Q_Response
 {
-
     protected $_name = '';
     protected $_context = array();
-
 
     public function __construct($name, array $context = array())
     {
         $this->_name = $name;
         $this->_context = $context;
     }
-
 
     public function __toString()
     {
@@ -43,5 +39,4 @@ class Q_Response
             echo $exc->getTraceAsString();
         } 
     }
-
 }

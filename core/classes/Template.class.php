@@ -5,10 +5,8 @@
  * @author Sokolov Innokenty <qbbr@qbbr.ru>
  * @copyright Copyright (c) 2010, qbbr
  */
-
 class Q_Template
 {
-    
     /**
      * @staticvar Twig_Environment
      */
@@ -18,7 +16,6 @@ class Q_Template
      * @staticvar string
      */
     protected static $_access = 'client';
-
     
     /**
      * Шаблонизатор
@@ -45,7 +42,6 @@ class Q_Template
 
         return self::$_tmpl;
     }
-
     
     /**
      * Назначить права доступа (admin или client)
@@ -60,13 +56,12 @@ class Q_Template
         self::$_access = $access;
     }
     
-    
     /**
      * Назначить директорию с шаблонами
      *
      * @static
      * @access public
-     * @param string|array $path путь до шаблонов
+     * @param string|array $path Путь до шаблонов
      * @return void
      */
     public static function addPath($path)
@@ -83,7 +78,6 @@ class Q_Template
         $loader->setPaths(array_merge($oldPaths, $path));
     }
     
-    
     /**
      * Добавить глобальную переменную
      *
@@ -97,5 +91,4 @@ class Q_Template
     {
         self::$_tmpl->addGlobal($key, $value);
     }
-    
 }

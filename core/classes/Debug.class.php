@@ -5,7 +5,6 @@
  * @author Sokolov Innokenty <qbbr@qbbr.ru>
  * @copyright Copyright (c) 2010, qbbr
  */
-
 class Q_Debug
 {
     /**
@@ -14,8 +13,7 @@ class Q_Debug
     static private $_started = false;
 
     /**
-     * Время старта
-     * @staticvar float
+     * @staticvar float Время старта
      */
     static private $_startTime = 0;
 
@@ -23,7 +21,6 @@ class Q_Debug
      * @staticvar Doctrine_Connection_Profiler
      */
     static private $_profiler = null;
-
 
     /**
      * Старт
@@ -60,7 +57,6 @@ class Q_Debug
         self::$_started = true;
     }
 
-
     /**
      * Setter
      * 
@@ -78,7 +74,6 @@ class Q_Debug
 
         return false;
     }
-
 
     /**
      * Распечатать в FireBug (FirePHP)
@@ -108,7 +103,6 @@ class Q_Debug
             $logs[$event->getQuery()][]= $log;
         }
 
-
         $i = 1;
         foreach ($logs as $query => $values) {
             $allTime = 0;
@@ -131,7 +125,6 @@ class Q_Debug
         FB::send($allTime, 'Total load time');
     }
 
-
     /**
      * @static
      * @access public
@@ -141,5 +134,4 @@ class Q_Debug
     {
         return self::$_started;
     }
-
 }

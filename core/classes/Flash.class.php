@@ -15,16 +15,12 @@
  * @author Sokolov Innokenty <qbbr@qbbr.ru>
  * @copyright Copyright (c) 2010, qbbr
  */
-
 class Q_Flash
 {
-
     /**
-     * Кэш
-     * @staticvar array
+     * @staticvar array Кэш
      */
     protected static $_cache = array();
-
 
     /**
      * Setter
@@ -43,7 +39,6 @@ class Q_Flash
 
         $_SESSION['flash'][$key] = $value;
     }
-
 
     /**
      * Getter
@@ -69,7 +64,6 @@ class Q_Flash
                : null;
     }
 
-
     /**
      * Очистить 
      * 
@@ -85,5 +79,4 @@ class Q_Flash
 
         self::$_cache = array();
     }
-
 }

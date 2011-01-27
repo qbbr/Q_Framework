@@ -23,10 +23,13 @@ database:
   
 
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
-timezone: Europe/Moscow
+time_zone: Europe/Moscow
+
+# http://www.i18nguy.com/unicode/language-identifiers.html
+language_code: ru_RU
 
 # время жизни сессии в минутах
-session_expire_time: 360
+session_expire_time: 180
 
 # режим откладки
 debug: true

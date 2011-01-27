@@ -5,49 +5,18 @@
  * @author Sokolov Innokenty <qbbr@qbbr.ru>
  * @copyright Copyright (c) 2010, qbbr
  */
-
 abstract class Q_Controller
 {
-
     /**
-     * название модуля
-     * @var string
+     * @var string client(by default) or admin
      */
-    //protected $_moduleName = '';
-
-    /**
-     * директория модуля
-     * @var string
-     */
-    //protected $_moduleDir = '';
-
-    /**
-     * директория с шаблонами
-     * @var string
-     */
-    //protected $_viewsDir = '';
-
-    /**
-     * client(by default) or admin
-     * @var string
-     */
-    protected $_access = 'client'; // by default
-
-
-    /**
-     * конструктор
-     * @param string $params параметры запроса (URI)
-     */
-//    public function __construct()
-//    {
-//    }
-
+    protected $_access = 'client';
 
     /**
      * Перенаправление
      *
      * @access protected
-     * @param string $url веб url
+     * @param string $url Веб url
      * @return void
      */
     protected function redirect($url)
@@ -56,23 +25,23 @@ abstract class Q_Controller
         exit();
     }
 
-
     /**
      * Вызвать контроллер
      *
      * @access protected
-     * @param string $moduleName название контроллера
+     * @param string $name Название контроллера
      * @return Q_Controller
      */
-    protected function getController($moduleName)
+    protected function getController($name)
     {
         // banana
     }
-
+    
     /**
      * HTTP_GET_VARS
      *
-     * @param string|integer $key ключ массива
+     * @access protected
+     * @param string|integer $key Ключ массива
      * @return mixed
      */
     protected function get($key)
@@ -80,11 +49,11 @@ abstract class Q_Controller
         return (isset($_GET[$key])) ? $_GET[$key] : null;
     }
 
-
     /**
      * HTTP_POST_VARS
      *
-     * @param string|integer $key ключ массива
+     * @access protected
+     * @param string|integer $key Ключ массива
      * @return mixed
      */
     protected function post($key)
@@ -92,11 +61,11 @@ abstract class Q_Controller
         return (isset($_POST[$key])) ? $_POST[$key] : null;
     }
 
-
     /**
      * HTTP_COOKIE_VARS
      *
-     * @param string|integer $key ключ массива
+     * @access protected
+     * @param string|integer $key Ключ массива
      * @return mixed
      */
     protected function cookie($key)
@@ -104,11 +73,11 @@ abstract class Q_Controller
         return (isset($_COOKIE[$key])) ? $_COOKIE[$key] : null;
     }
 
-
     /**
      * HTTP_SESSION_VARS
      *
-     * @param string|integer $key ключ массива
+     * @access protected
+     * @param string|integer $key Ключ массива
      * @return mixed
      */
     protected function session($key)
@@ -116,16 +85,15 @@ abstract class Q_Controller
         return (isset($_SESSION[$key])) ? $_SESSION[$key] : null;
     }
 
-
     /**
      * HTTP_POST_FILES
      *
-     * @param string|integer $key ключ массива
+     * @access protected
+     * @param string|integer $key Ключ массива
      * @return mixed
      */
     protected function files($key)
     {
         return (isset($_FILES[$key])) ? $_FILES[$key] : null;
     }
-
 }

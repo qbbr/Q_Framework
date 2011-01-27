@@ -17,14 +17,17 @@ include_once LIBS . DS . 'Yaml' . DS . 'sfYaml.php';
 
 // инициализация настроек
 $settings = sfYaml::load(CONFIGS . DS . 'settings.yml');
-if (isset($settings['timezone'])) {
-    date_default_timezone_set($settings['timezone']);
+if (isset($settings['time_zone'])) {
+    date_default_timezone_set($settings['time_zone']);
+}
+if (isset($settings['language_code'])) {
+    setlocale(LC_ALL, 'language_code');
 }
 // сессия
-$time = $settings['session_expire_time'] * 60;
+$time = time() + (integer)$settings['session_expire_time'] * 60;
 session_set_cookie_params($time, '/');
 session_start();
-if (isset($_COOKIE[session_name()])) setcookie(session_name(), $_COOKIE[session_name()], time() + $time, '/');
+if (isset($_COOKIE[session_name()])) setcookie(session_name(), $_COOKIE[session_name()], $time, '/');
 
 Q_Registry::set('settings', $settings);
 
@@ -120,6 +123,6 @@ function exceptionHandler($exception, $message = null, $file = null, $line = nul
 
 
 // annotations
-require_once LIBS . DS . 'annotations' . DS . 'annotations.php';
-class AclAction extends Annotation {};
-class Ajax extends Annotation {};
+require_once LIBS . DS . 'Annotations' . DS . 'Annotations.php';
+class AclAction extends Q_Annotation {};
+class Ajax extends Q_Annotation {};

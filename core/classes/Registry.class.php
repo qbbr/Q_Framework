@@ -11,24 +11,21 @@
  * @author Sokolov Innokenty <qbbr@qbbr.ru>
  * @copyright Copyright (c) 2010, qbbr
  */
-
 class Q_Registry
 {
-
     /**
-     * Реестр
-     * @staticvar array
+     * 
+     * @staticvar array Реестр
      */
     static private $_registry = array();
-
 
     /**
      * Вставка данных в реестр
      *
      * @static
      * @access public
-     * @param string|integer $key ключ массива
-     * @param mixed $value значение
+     * @param string|integer $key Ключ массива
+     * @param mixed $value Значение
      * @return boolean
      */
     static public function set($key, $value)
@@ -41,13 +38,12 @@ class Q_Registry
         return false;
     }
 
-
     /**
      * Получение данных из реестра
      *
      * @static
      * @access public
-     * @param string|integer $key1, $key2, $key3... ключи массива
+     * @param string|integer $key1, $key2, $key3... Ключи массива
      * @return mixed
      */
     static public function get()
@@ -67,5 +63,4 @@ class Q_Registry
 
         return $r;
     }
-
 }

@@ -5,28 +5,25 @@
  * @author Sokolov Innokenty <qbbr@qbbr.ru>
  * @copyright Copyright (c) 2010, qbbr
  */
-
 class Q_Router
 {
-    
     /**
      * @staticvar ReflectionAnnotatedClass
      */
     static private $_reflection = null;
-
+    
     /**
      * Разбор запроса
      *
      * @static
      * @access public
      * @param string $uri REQUEST_URI
+     * @throws Q_MyException
      * @return mixed
      */
     static public function parseRequest($uri)
     {
-        require_once CONFIGS . DS . 'urlpatterns.php';
-
-        $a = Q_Registry::get('urlPatterns');
+        $a = require_once CONFIGS . DS . 'urlpatterns.php';
 
         foreach ($a as $pattern) {
 
@@ -112,7 +109,6 @@ class Q_Router
         return self::error404();
     }
     
-    
     /**
      * isAjaxRequest 
      * 
@@ -124,7 +120,6 @@ class Q_Router
     {
         return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest';
     }
-    
     
     /**
      * isAjaxMethod 
@@ -141,7 +136,6 @@ class Q_Router
 
         return $methodReflection->hasAnnotation('Ajax');
     }
-    
     
     /**
      * getAclAction 
@@ -161,24 +155,22 @@ class Q_Router
                : '';
     }
 
-
     /**
      * getReflectionClass 
      * 
      * @param string $class 
      * @static
      * @access private
-     * @return ReflectionAnnotatedClass
+     * @return Q_ReflectionAnnotatedClass
      */
     static private function getReflectionClass($class)
     {
         if (!isset(self::$_reflection[$class])) {
-            self::$_reflection[$class] = new ReflectionAnnotatedClass($class);
+            self::$_reflection[$class] = new Q_ReflectionAnnotatedClass($class);
         }
 
         return self::$_reflection[$class];
     }
-
 
     /**
      * getReflectionMethod 
@@ -196,7 +188,6 @@ class Q_Router
         return $reflectionClass->getMethod($method);
     }
 
-
     /**
      * error 404
      * 
@@ -210,5 +201,4 @@ class Q_Router
         include(WEB . DS . '404.php');
         exit();
     }
-
 }

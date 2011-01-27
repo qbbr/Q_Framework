@@ -15,80 +15,67 @@
  * @author Sokolov Innokenty <qbbr@qbbr.ru>
  * @copyright Copyright (c) 2010, qbbr
  */
-
 class Q_Mail
 {
-
     /**
-     * кодировка письма
-     * @var string
+     * @var string Кодировка письма
      */
     public $charset = 'utf8';
 
     /**
-     * кодирование контента
-     * @var string
+     * @var string Кодирование контента
      */
     private $_encoding = '8bit';
 
     /**
-     * формат контента
-     * @var string
+     * @var string Формат контента
      */
     private $_contentType = 'text/plain';
 
     /**
-     * заголовки
-     * @var array
+     * @var array Заголовки
      */
     private $_headers = array();
 
     /**
-     * кому
-     * @var string
+     * @var string Кому
      */
     private $_to = '';
 
     /**
-     * тема письма
-     * @var string
+     * @var string Тема письма
      */
     private $_subject = '';
 
     /**
-     * текст
-     * @var string
+     * @var string Текст
      */
     private $_message = '';
 
     /**
-     * прикреплённые файлы
-     * @var array
+     * @var array Прикреплённые файлы
      */
     private $_attach = array();
 
     /**
-     * граница для прикреплённых файлов
-     * @var string
+     * @var string Граница для прикреплённых файлов
      */
     private $_boundary = '';
 
-
     /**
-     * конструктор
+     * Конструктор
      */
     public function __construct()
     {
         $this->_boundary = '--' . md5(uniqid('boundary'));
     }
 
-
     /**
-     * установка заголовка
+     * Установка заголовка
      *
      * @access private
-     * @param string $key ключ
-     * @param string $value значение
+     * @param string $key Ключ
+     * @param string $value Значение
      * @return boolean
      */
     private function set_header($key, $value)
@@ -100,12 +87,11 @@ class Q_Mail
         return true;
     }
 
-
     /**
-     * от кого
+     * От кого
      *
      * @access public
-     * @param string $mail почта
+     * @param string $mail Почта
      * @param string $name ФИО
      * @return boolean
      */
@@ -114,12 +100,11 @@ class Q_Mail
         return $this->set_header('From', "{$name} <{$mail}>");
     }
 
-
     /**
-     * обратный адрес
+     * Обратный адрес
      *
      * @access public
-     * @param string $mail почта
+     * @param string $mail Почта
      * @param string $name ФИО
      * @return boolean
      */
@@ -129,12 +114,11 @@ class Q_Mail
         return $this->set_header('Reply-To', "{$name} <{$mail}>");
     }
 
-
     /**
-     * кому
+     * Кому
      *
      * @access public
-     * @param string $mail почта
+     * @param string $mail Почта
      * @return boolean
      */
     public function to($mail)
@@ -143,12 +127,11 @@ class Q_Mail
         return true;
     }
 
-
     /**
-     * открытая копия
+     * Открытая копия
      *
      * @access public
-     * @param string $mail почта
+     * @param string $mail Почта
      * @return boolean
      */
     public function cc($mail)
@@ -156,12 +139,11 @@ class Q_Mail
         return $this->set_header('Cc', $this->parse_mail($mail));
     }
 
-
     /**
-     * скрытая копия
+     * Скрытая копия
      *
      * @access public
-     * @param string $mail почта
+     * @param string $mail Почта
      * @return boolean
      */
     public function bcc($mail)
@@ -169,12 +151,11 @@ class Q_Mail
         return $this->set_header('Bcc', $mail = $this->parse_mail($mail));
     }
 
-
     /**
-     * тема сообщения
+     * Тема сообщения
      *
      * @access public
-     * @param string $subject тема письма
+     * @param string $subject
      * @return boolean
      */
     public function subject($subject)
@@ -184,13 +165,12 @@ class Q_Mail
         return true;
     }
 
-
     /**
-     * текст сообщения
+     * Текст сообщения
      *
      * @access public
-     * @param string $msg сообщение
-     * @param boolean $content_type_is_html[optional] сообщение в формате html?
+     * @param string $msg Сообщение
+     * @param boolean $isHtml [optional] Сообщение в формате html?
      * @return boolean
      */
     public function message($msg, $isHtml = false)
@@ -202,12 +182,11 @@ class Q_Mail
         return true;
     }
 
-
     /**
-     * назначить приоритет важности письма
+     * Назначить приоритет важности письма
      *
      * @access public
-     * @param int $priority приоритет от 1 (самый высокий) до 5 (самый низкий)
+     * @param integer $priority Приоритет от 1 (самый высокий) до 5 (самый низкий)
      * @return boolean
      */
     public function priority($priority)
@@ -217,15 +196,14 @@ class Q_Mail
         return $this->set_header('X-Priority', $priority);
     }
 
-
     /**
-     * прикрепить файл
+     * Прикрепить файл
      *
      * @access public
-     * @param string $file путь до файла
-     * @param string $file_name[optional] название файла
-     * @param string $file_type[optional] тип файла
-     * @param string $disposition[optional]
+     * @param string $file Путь до файла
+     * @param string $fileName [optional] Название файла
+     * @param string $fileType [optional] Тип файла
+     * @param string $disposition [optional]
      * @return boolean
      */
     public function attach($file, $fileName = null, $fileType = null, $disposition = 'attachment')
@@ -240,9 +218,8 @@ class Q_Mail
         return true;
     }
 
-
     /**
-     * отправка
+     * Отправка
      *
      * @access public
      * @return boolean
@@ -258,9 +235,8 @@ class Q_Mail
         return @mail($this->_to, $this->_subject, $body, $headers);
     }
 
-
     /**
-     * собираем прикреплённые файла
+     * Собираем прикреплённые файла
      *
      * @access private
      * @return string
@@ -290,9 +266,8 @@ class Q_Mail
         return $body;
     }
 
-
     /**
-     * собираем заголовки
+     * Собираем заголовки
      *
      * @access private
      * @return string
@@ -323,10 +298,10 @@ class Q_Mail
     }
 
     /**
-     * правим почту (запятую), если их несколько
+     * Правим почту (запятую), если их несколько
      *
      * @access private
-     * @param string $mail электронный адрес
+     * @param string $mail Электронный адрес
      * @return boolean
      */
     private function parse_mail($mail)
@@ -339,5 +314,4 @@ class Q_Mail
         }
         return implode(', ', $mails);
     }
-
 }

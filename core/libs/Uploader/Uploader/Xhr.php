@@ -7,7 +7,6 @@ require_once 'Interface.php';
  * @author Sokolov Innokenty <qbbr@qbbr.ru>
  * @copyright Copyright (c) 2010, qbbr
  */
-
 class Uploader_Xhr implements Uploader_Interface
 {
     /**
@@ -52,7 +51,7 @@ class Uploader_Xhr implements Uploader_Interface
      * Получить размер файла
      *
      * @access public
-     * @throws Uploader_Exception если не может получить $_SERVER['CONTENT_LENGTH']
+     * @throws Uploader_Exception Если не может получить $_SERVER['CONTENT_LENGTH']
      * @return int
      */
     public function getSize()

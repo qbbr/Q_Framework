@@ -5,17 +5,15 @@
  * @author Sokolov Innokenty <qbbr@qbbr.ru>
  * @copyright Copyright (c) 2010, qbbr
  */
-
 class Q_Authorization
 {
-
     /**
      * Проверка авторизации
      *
      * @static
      * @access public
-     * @param integer $userId id пользователя
-     * @param string $userPsswd пароль
+     * @param integer $userId Id пользователя
+     * @param string $userPsswd Пароль
      * @return boolean
      */
     static public function check($userId, $userPsswd)
@@ -42,14 +40,13 @@ class Q_Authorization
         return false;
     }
 
-
     /**
      * Проверка авторизации по mail`у
      *
      * @static
      * @access public
-     * @param string $userMail mail
-     * @param string $userPsswd пароль
+     * @param string $userMail Mail
+     * @param string $userPsswd Пароль
      * @return array
      */
     static public function checkByMail($userMail, $userPsswd)
@@ -78,7 +75,6 @@ class Q_Authorization
 
         return false;
     }
-
 
     /**
      * Проверка авторизации по сессии
@@ -115,7 +111,6 @@ class Q_Authorization
         return false;
     }
 
-
     /**
      * Выход
      *
@@ -135,5 +130,4 @@ class Q_Authorization
 
         return true;
     }
-
 }

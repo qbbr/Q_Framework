@@ -16,14 +16,11 @@
  * @author Sokolov Innokenty <qbbr@qbbr.ru>
  * @copyright Copyright (c) 2010, qbbr
  */
-
 class Q_JsonResponse
 {
-
     protected $_params = array();
 
-
-    public function __construct(array $params)
+    public function __construct(array $params = array())
     {
         if (!isset($params['success'])) $params['success'] = true;
         if (!isset($params['error'])) $params['error'] = '';
@@ -31,10 +28,8 @@ class Q_JsonResponse
         $this->_params = $params;
     }
 
-
     public function __toString()
     {
         return json_encode($this->_params);
     }
-
 }

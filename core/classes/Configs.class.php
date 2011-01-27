@@ -14,16 +14,12 @@
  * @author Sokolov Innokenty <qbbr@qbbr.ru>
  * @copyright Copyright (c) 2010, qbbr
  */
-
 class Q_Configs
 {
-    
     /**
-     * Кэш
-     * @staticvar array
+     * @staticvar array Кэш
      */
-    static private $_cache = array();
-    
+    static public $_cache = array();
     
     /**
      * Getter
@@ -36,7 +32,6 @@ class Q_Configs
      */
     static public function get($key1, $key2 = null)
     {
-        
         if (is_null($key2) && isset(self::$_cache[$key1])) {
             return self::$_cache[$key1];
         } elseif (isset(self::$_cache[$key1][$key2])) {
@@ -57,20 +52,17 @@ class Q_Configs
         return (is_null($key2)) ? $configs : $configs[$key2];
     }
     
-    
     /**
      * Setter
      *
      * @static
      * @access public
-     * @param string $moduleName название модуля
-     * @param string|integer $key ключ
-     * @param mixed $value значение
+     * @param string $moduleName Название модуля
+     * @param string|integer $key Ключ
+     * @param mixed $value Значение
      * @return void
      */
     static public function set($moduleName, $key, $value)
     {
-        
     }
-
 }

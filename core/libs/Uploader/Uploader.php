@@ -7,45 +7,34 @@ include_once dirname(__FILE__) . DS . 'Uploader' . DS . 'Exception.php';
  * @author Sokolov Innokenty <qbbr@qbbr.ru>
  * @copyright Copyright (c) 2010, qbbr
  */
-
 class Uploader
 {
-
     /**
-     * Допустимые расширения
-     * @access private
-     * @var array
+     * @var array Допустимые расширения
      */
     private $_allowedExtensions = array();
 
     /**
-     * Максимальный размер файла
-     * @access private
-     * @var int
+     * @var int Максимальный размер файла
      */
     private $_sizeLimit = 0;
 
     /**
-     * File handler
-     * @access private
-     * @var object
+     * @var object File handler
      */
     private $_file;
 
     /**
-     * Название файла
-     * @access private
-     * @var string
+     * @var string Название файла
      */
     private $_filename = '';
-
 
     /**
      * Constructor
      *
      * @access public
-     * @param array $allowedExtensions допустимые расширения
-     * @param int $sizeLimit максимальный размер файла
+     * @param array $allowedExtensions Допустимые расширения
+     * @param int $sizeLimit Максимальный размер файла
      * @return void
      */
     public function __construct(array $allowedExtensions = array(), $sizeLimit = 10485760)
@@ -68,7 +57,6 @@ class Uploader
         }
     }
 
-
     /**
      * Проверка директив сервера
      *
@@ -88,13 +76,12 @@ class Uploader
         return true;
     }
 
-
     /**
      * Перевести в байты
      *
      * @access private
      * @param string $str
-     * @return int
+     * @return integer
      */
     private function toBytes($str)
     {
@@ -110,13 +97,12 @@ class Uploader
         return $val;
     }
 
-
     /**
      * Загрузить
      *
      * @access public
-     * @param string $uploadDirectory директория, в которую будут загружаться файлы
-     * @param boolean $replaceOldFile
+     * @param string $uploadDirectory Директория, в которую будут загружаться файлы
+     * @param array $extraParams Дополнительные параметры ответа
      * @return array array('success'=>true) or array('error'=>'error message')
      */
     public function upload($uploadDirectory, $extraParams = array())
@@ -163,9 +149,7 @@ class Uploader
         } else {
             return $this->error('Could not save uploaded file. The upload was cancelled, or server error encountered');
         }
-
     }
-
 
     /**
      * Получить название файла
@@ -178,12 +162,11 @@ class Uploader
         return $this->_filename;
     }
 
-
     /**
      * Ошибка
      *
      * @access private
-     * @param string $msg сообщение
+     * @param string $msg Сообщение
      * @return array
      */
     private function error($msg)
@@ -192,5 +175,4 @@ class Uploader
             'error' => $msg
         );
     }
-
 }
