@@ -1,0 +1,27 @@
+# /etc/apache2/sites-available/
+
+<VirtualHost *:80>
+	ServerName  q-cms.local
+	ServerAlias www.q-cms.local
+	ServerAdmin qbbr@Q.qbbr.ru
+	
+	DocumentRoot /var/www/q-cms/web/
+	<Directory />
+		Options FollowSymLinks
+		AllowOverride None
+	</Directory>
+	<Directory /var/www/q-cms/web/>
+		Options Indexes FollowSymLinks MultiViews
+		AllowOverride all
+		Order allow,deny
+		allow from all
+	</Directory>
+
+	ErrorLog /var/www/q-cms/logs/error.log
+
+	# Possible values include: debug, info, notice, warn, error, crit,
+	# alert, emerg.
+	LogLevel warn
+
+	CustomLog /var/www/q-cms/logs/access.log combined
+</VirtualHost>

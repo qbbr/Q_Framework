@@ -68,17 +68,6 @@ function fb()
 class FB
 {
     /**
-     * Set an Insight console to direct all logging calls to
-     * 
-     * @param object $console The console object to log to
-     * @return void
-     */
-    public static function setLogToInsightConsole($console)
-    {
-        FirePHP::getInstance(true)->setLogToInsightConsole($console);
-    }
-
-    /**
      * Enable and disable logging to Firebug
      * 
      * @see FirePHP->setEnabled()
@@ -87,7 +76,8 @@ class FB
      */
     public static function setEnabled($Enabled)
     {
-        FirePHP::getInstance(true)->setEnabled($Enabled);
+        $instance = FirePHP::getInstance(true);
+        $instance->setEnabled($Enabled);
     }
   
     /**
@@ -98,7 +88,8 @@ class FB
      */
     public static function getEnabled()
     {
-        return FirePHP::getInstance(true)->getEnabled();
+        $instance = FirePHP::getInstance(true);
+        return $instance->getEnabled();
     }  
   
     /**
@@ -113,7 +104,8 @@ class FB
      */
     public static function setObjectFilter($Class, $Filter)
     {
-      FirePHP::getInstance(true)->setObjectFilter($Class, $Filter);
+      $instance = FirePHP::getInstance(true);
+      $instance->setObjectFilter($Class, $Filter);
     }
   
     /**
@@ -125,7 +117,8 @@ class FB
      */
     public static function setOptions($Options)
     {
-        FirePHP::getInstance(true)->setOptions($Options);
+        $instance = FirePHP::getInstance(true);
+        $instance->setOptions($Options);
     }
 
     /**
@@ -136,7 +129,8 @@ class FB
      */
     public static function getOptions()
     {
-        return FirePHP::getInstance(true)->getOptions();
+        $instance = FirePHP::getInstance(true);
+        return $instance->getOptions();
     }
 
     /**
@@ -149,8 +143,9 @@ class FB
      */
     public static function send()
     {
+        $instance = FirePHP::getInstance(true);
         $args = func_get_args();
-        return call_user_func_array(array(FirePHP::getInstance(true),'fb'), $args);
+        return call_user_func_array(array($instance,'fb'),$args);
     }
 
     /**
@@ -166,7 +161,8 @@ class FB
      */
     public static function group($Name, $Options=null)
     {
-        return FirePHP::getInstance(true)->group($Name, $Options);
+        $instance = FirePHP::getInstance(true);
+        return $instance->group($Name, $Options);
     }
 
     /**

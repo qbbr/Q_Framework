@@ -30,13 +30,6 @@ class Q_Response
     public function __toString()
     {
         $template = Q_Template::getTemplate()->loadTemplate($this->_name);
-        
-        try {
-            return $template->render($this->_context);
-        } catch (Twig_Error $exc) {
-            echo $exc->getMessage();
-            echo "<br />\n";
-            echo $exc->getTraceAsString();
-        } 
+        return $template->render($this->_context);
     }
 }

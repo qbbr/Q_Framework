@@ -19,8 +19,9 @@ abstract class Q_Controller
      * @param string $url Веб url
      * @return void
      */
-    protected function redirect($url)
+    protected function redirect($url = null)
     {
+        if (null === $url) $url = $_SERVER['HTTP_REFERER'];
         header('Location: ' . $url);
         exit();
     }

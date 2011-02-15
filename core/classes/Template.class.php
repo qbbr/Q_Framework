@@ -89,6 +89,6 @@ class Q_Template
      */
     public static function addGlobal($key, $value)
     {
-        self::$_tmpl->addGlobal($key, $value);
+        self::getTemplate()->addGlobal($key, $value);
     }
 }

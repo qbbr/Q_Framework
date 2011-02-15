@@ -8,6 +8,9 @@ DirectoryIndex index.php
 # 404 ошибка
 ErrorDocument 404 /404.php
 
+# use svn?
+RedirectMatch 404 \.svn/?$
+
 # кодировка по-умолчанию
 AddDefaultCharset UTF-8
 
