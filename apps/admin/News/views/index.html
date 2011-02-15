@@ -1,0 +1,180 @@
+{% extends "layout.html" %}
+
+
+{% block css %}
+<link rel="stylesheet" href="/etc/css/admin/news.css">
+    <link rel="stylesheet" href="/etc/css/admin/ckeditor.css">
+{% endblock %}
+
+
+{% block js %}
+    <script src="/etc/js/admin/Q.Admin.News.js"></script>
+    <script type="text/javascript" src="/etc/js/ckeditor/ckeditor.js"></script>
+    <script type="text/javascript" src="/etc/js/codemirror/js/codemirror.js"></script>
+    <script type="text/javascript" src="/etc/js/ckeditor-codemirror.js"></script>
+    <script type="text/javascript" src="/etc/js/ckeditor/adapters/jquery.js"></script>
+{% endblock %}
+
+
+{% import 'path.html' as path %}
+
+
+{% block main %}
+
+<table class="up-panel">
+    <tbody>
+        <tr>
+            <td class="left">
+                <a onclick="Q.Admin.News.create();" class="button">{% trans %}Create news{% endtrans %}</a>
+            </td>
+
+            <td class="main">
+            </td>
+
+            <td class="right">
+                <div>
+                    {% trans %}News count{% endtrans %}: {{ news|length }}
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+
+<br />
+
+
+{{ path.path({ 0: ['Новости', 'news/'] }) }}
+
+
+<br />
+
+
+<table class="conteiner colorer hoverer">
+    <thead>
+        <tr>
+            <th class="small"></th>
+            <th class="small"><input type="checkbox" /></th>
+            <th>News editor</th>
+            <th></th>
+            <th class="small blue" ><span class="tooltip" title="Анонс" lang="s">А</span></th>
+            <th class="small blue"><span class="tooltip" title="Текст" lang="se">T</span></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for news in newsList %}
+        <tr>
+            <td>
+                {% if news.is_active %}
+                    <a class="icon16 icon-power tooltip" onclick="Q.Admin.News.power();" lang="e" title="вкл/выкл"></a>
+                {% else %}
+                    <a class="icon16 icon-power-g tooltip" onclick="Q.Admin.News.power();" lang="e" title="вкл/выкл"></a>
+                {% endif %}
+            </td>
+            <td><input type="checkbox" /></td>
+            <td>
+                <a onclick="Q.Admin.News.edit('{{ news.id }}');">{{ news.name }}</a>
+                <div class="actions">
+                    <a class="icon16 icon-edit tooltip" onclick="Q.Admin.News.edit('{{ news.id }}');" title="Редатировать"></a>
+                    <div class="fll separator">|</div>
+                    <a class="icon16 icon-delete flr tooltip" onclick="Q.Admin.News.remove(event, this);" title="Удалить"></a>
+                </div>
+            </td>
+            <td>{{ news.created_at|date('d/m/Y H:i') }}</td>
+            <td>{% if news.announce %}<div class="icon16 icon-tick"></div>{% endif %}</td>
+            <td>{% if news.text %}<div class="icon16 icon-tick"></div>{% endif %}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+{% if news %}
+
+<br />
+
+<form method="post">
+
+    <table class="up-panel panel">
+        <tbody>
+            <tr>
+                <td class="left">
+                    Заголовок:
+
+                </td>
+
+                <td class="main">
+                    <input type="text" name="name" value="{{ news.name|e }}" />
+                </td>
+
+                <td class="right">
+                    <div>
+                        <div class="icon16 icon-eye"></div>
+                        &nbsp;
+                        <a>{% trans %}View{% endtrans %}</a>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+
+    <br />
+
+    <div class="for_tabs">
+            <ul class="tabs">
+                <li><a href="#tab1">Анонс</a></li>
+                <li><a href="#tab2">Текст</a></li>
+                <li><a href="#tab3">SEO</a></li>
+            </ul>
+            <div class="tab_container">
+                <div id="tab1" class="tab_content">
+                    <textarea name="announce" class="editor">{{ news.announce|e }}</textarea>
+                </div>
+
+                <div id="tab2" class="tab_content">
+                    <textarea name="text" class="editor">{{ news.text|e }}</textarea>
+                </div>
+
+                <div id="tab3" class="tab_content">
+                    <table class="conteiner colorer">
+                        <tbody>
+                            <tr>
+                                <td class="key w220px">Загаловок (title)</td>
+                                <td><input type="text" name="seo_title" value="{{ news.seo_title|e }}" /></td>
+                            </tr>
+                            <tr>
+                                <td class="key">Ключевые слова (keywords)</td>
+                                <td><input type="text" name="seo_keywords" value="{{ news.seo_keywords|e }}" /></td>
+                            </tr>
+                            <tr>
+                                <td class="key">Описание (description)</td>
+                                <td><input type="text" name="seo_description" value="{{ news.seo_description|e }}" /></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+    </div>
+
+    <div class="both"></div>
+    <br />
+
+    <div class="center">
+        <input type="submit" value="{% trans %}Save{% endtrans %}" />
+        <input type="button" value="{% trans %}Back{% endtrans %}" onclick="window.location.href = '/cp/news/';" />
+    </div>
+
+</form>
+
+<script>
+    Q.Admin.WYSIWYG();
+    {% if saved %}
+        alert('Успешно сохранено');
+    {% endif %}
+</script>
+
+{% endif %}
+
+{% endblock %}

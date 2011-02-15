@@ -1,0 +1,101 @@
+{% extends "layout.html" %}
+
+
+{% block css %}
+<link rel="stylesheet" href="/etc/css/admin/ckeditor.css">
+{% endblock %}
+
+{% block js %}
+<script src="/etc/js/admin/Q.Admin.News.js"></script>
+<script type="text/javascript" src="/etc/js/ckeditor/ckeditor.js"></script>
+<script type="text/javascript" src="/etc/js/codemirror/js/codemirror.js"></script>
+<script type="text/javascript" src="/etc/js/ckeditor-codemirror.js"></script>
+<script type="text/javascript" src="/etc/js/ckeditor/adapters/jquery.js"></script>
+{% endblock %}
+
+{% block main %}
+
+<form method="post" action="/cp/news/save/">
+
+    <input type="hidden" name="id" value="{{ news.id }}" />
+    
+    <table class="conteiner colorer hoverer">
+        <thead>
+            <tr>
+                <th colspan="2">Редактирование новости `{{ news.id }}`</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr>
+                <td class="w220px">Название</td>
+                <td><input type="text" name="name" value="{{ news.name|e }}" /></td>
+            </tr>
+
+            <tr>
+                <td class="w220px">Дата создания</td>
+                <td>{{ news.datetime_created|date('H:i:s d/m/Y') }}</td>
+            </tr>
+
+            <tr>
+                <td class="w220px">Активна?</td>
+                <td><input type="checkbox" name="is_active" {% if news.is_active %}checked {% endif %}/></td>
+            </tr>
+
+        </tbody>
+    </table>
+
+    <br />
+
+    <div class="for_tabs">
+        <ul class="tabs">
+            <li><a href="#tab1">SEO</a></li>
+            <li><a href="#tab2">Анонс</a></li>
+            <li><a href="#tab3">Текст</a></li>
+        </ul>
+
+        <div class="tab_container">
+            <div id="tab1" class="tab_content">
+                <table class="conteiner colorer">
+                    <tbody>
+                        <tr>
+                            <td class="key w220px">Загаловок (title)</td>
+                            <td><input type="text" name="seo_title" value="{{ news.seo_title|e }}" /></td>
+                        </tr>
+                        <tr>
+                            <td class="key">Ключевые слова (keywords)</td>
+                            <td><input type="text" name="seo_keywords" value="{{ news.seo_keywords|e }}" /></td>
+                        </tr>
+                        <tr>
+                            <td class="key">Описание (description)</td>
+                            <td><input type="text" name="seo_description" value="{{ news.seo_description|e }}" /></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="tab2" class="tab_content">
+                <textarea class="editor">{{ news.announce|e }}</textarea>
+            </div>
+
+            <div id="tab3" class="tab_content">
+                <textarea class="editor">{{ news.text|e }}</textarea>
+            </div>
+        </div>
+    </div>
+
+    <div class="both"></div>
+    <br />
+
+    <div class="center">
+        <input type="submit" value="Сохранить" />
+        <input type="button" value="Отменить" onclick="window.location.href = '/cp/news/';" />
+    </div>
+
+</form>
+
+<script>
+    Q.Admin.WYSIWYG();
+</script>
+
+{% endblock %}
